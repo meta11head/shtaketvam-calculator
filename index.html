@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
             min-height: 100vh;
             padding: 40px 20px;
         }
@@ -31,9 +31,9 @@
             overflow: hidden;
         }
         
-        /* Шапка в стиле сайта */
+        /* Шапка в зелёном стиле */
         .header {
-            background: #2d2d2d;
+            background: #1b5e20;
             padding: 30px 20px;
             text-align: center;
         }
@@ -45,7 +45,7 @@
         }
         
         .header p {
-            color: #ff8c00;
+            color: #a5d6a7;
             font-size: 14px;
         }
         
@@ -76,29 +76,14 @@
         
         input:focus, select:focus {
             outline: none;
-            border-color: #ff8c00;
+            border-color: #2e7d32;
         }
         
-        /* Чекбокс */
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .checkbox-group input {
-            width: auto;
-        }
-        
-        .checkbox-group label {
-            margin-bottom: 0;
-        }
-        
-        /* Кнопка в стиле сайта */
+        /* Кнопка в зелёном стиле */
         .calculate-btn {
             width: 100%;
             padding: 14px;
-            background: #ff8c00;
+            background: #2e7d32;
             color: white;
             border: none;
             border-radius: 10px;
@@ -110,9 +95,9 @@
         }
         
         .calculate-btn:hover {
-            background: #e07b00;
+            background: #1b5e20;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,140,0,0.3);
+            box-shadow: 0 5px 15px rgba(46,125,50,0.3);
         }
         
         .calculate-btn:active {
@@ -151,10 +136,10 @@
         .result-total {
             font-size: 24px;
             font-weight: bold;
-            color: #ff8c00;
+            color: #2e7d32;
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 2px solid #ff8c00;
+            border-top: 2px solid #2e7d32;
             text-align: center;
         }
         
@@ -205,13 +190,6 @@
                     </select>
                 </div>
                 
-                <div class="form-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="installation">
-                        <label>🔧 Требуется монтаж (+300 руб/метр)</label>
-                    </div>
-                </div>
-                
                 <button class="calculate-btn" id="calculateBtn">Рассчитать стоимость</button>
                 
                 <div class="result" id="result">
@@ -227,12 +205,12 @@
     </div>
     
     <script>
+        // Адрес вашего микросервиса
         const API_URL = 'http://localhost/calculator/index.php';
         
         async function calculate() {
             const length = document.getElementById('length').value;
             const city = document.getElementById('city').value;
-            const installation = document.getElementById('installation').checked;
             const resultDiv = document.getElementById('result');
             
             // Валидация
@@ -257,8 +235,7 @@
                     },
                     body: JSON.stringify({
                         length: parseFloat(length),
-                        city: city,
-                        installation: installation
+                        city: city
                     })
                 });
                 
@@ -268,7 +245,6 @@
                     const total = data.data.total.toLocaleString('ru-RU');
                     const materials = data.data.materials.toLocaleString('ru-RU');
                     const delivery = data.data.delivery.toLocaleString('ru-RU');
-                    const installationCost = data.data.installation.toLocaleString('ru-RU');
                     
                     resultDiv.innerHTML = `
                         <div class="result-content">
@@ -280,10 +256,6 @@
                                 <span>🚚 Доставка:</span>
                                 <span>${delivery} ₽</span>
                             </div>
-                            ${installation ? `<div class="result-line">
-                                <span>🛠 Монтаж:</span>
-                                <span>${installationCost} ₽</span>
-                            </div>` : ''}
                             <div class="result-total">
                                 ИТОГО: ${total} ₽
                             </div>
