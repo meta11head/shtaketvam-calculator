@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор забора | ШтакетВам</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Карточка калькулятора */
+        .calculator-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* Шапка в стиле сайта */
+        .header {
+            background: #2d2d2d;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #ff8c00;
+            font-size: 14px;
+        }
+        
+        /* Форма */
+        .form-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff8c00;
+        }
+        
+        /* Чекбокс */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
+        
+        /* Кнопка в стиле сайта */
+        .calculate-btn {
+            width: 100%;
+            padding: 14px;
+            background: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .calculate-btn:hover {
+            background: #e07b00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,140,0,0.3);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Результат */
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .result-placeholder {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .result-content {
+            text-align: left;
+        }
+        
+        .result-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .result-line:last-of-type {
+            border-bottom: none;
+        }
+        
+        .result-total {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff8c00;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ff8c00;
+            text-align: center;
+        }
+        
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        /* Футер */
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-card">
+            <div class="header">
+                <h1>ШтакетВам</h1>
+                <p>Рассчитайте стоимость забора онлайн</p>
+            </div>
+            
+            <div class="form-body">
+                <div class="form-group">
+                    <label>📏 Длина забора (метров)</label>
+                    <input type="number" id="length" placeholder="Например, 20" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label>📍 Город доставки</label>
+                    <select id="city">
+                        <option value="нефтекамск">Нефтекамск</option>
+                        <option value="уфа">Уфа</option>
+                        <option value="октябрьский">Октябрьский</option>
+                        <option value="бирск">Бирск</option>
+                        <option value="казань">Казань</option>
+                        <option value="стерлитамак">Стерлитамак</option>
+                        <option value="салават">Салават</option>
+                        <option value="туймазы">Туймазы</option>
+                        <option value="другой">Другой город</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="installation">
+                        <label>🔧 Требуется монтаж (+300 руб/метр)</label>
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" id="calculateBtn">Рассчитать стоимость</button>
+                
+                <div class="result" id="result">
+                    <div class="result-placeholder">👆 Нажмите «Рассчитать стоимость»</div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>ООО «ШтакетВам» | г. Нефтекамск</p>
+                <p style="margin-top: 5px; font-size: 11px;">* Стоимость рассчитана автоматически</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost/calculator/index.php';
+        
+        async function calculate() {
+            const length = document.getElementById('length').value;
+            const city = document.getElementById('city').value;
+            const installation = document.getElementById('installation').checked;
+            const resultDiv = document.getElementById('result');
+            
+            // Валидация
+            if (!length || length <= 0) {
+                resultDiv.innerHTML = '<div class="error">❌ Введите длину забора (больше 0 метров)</div>';
+                return;
+            }
+            
+            if (length > 1000) {
+                resultDiv.innerHTML = '<div class="error">⚠️ Длина забора не может превышать 1000 метров</div>';
+                return;
+            }
+            
+            // Показываем загрузку
+            resultDiv.innerHTML = '<div class="result-placeholder">⏳ Выполняется расчёт...</div>';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        length: parseFloat(length),
+                        city: city,
+                        installation: installation
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const total = data.data.total.toLocaleString('ru-RU');
+                    const materials = data.data.materials.toLocaleString('ru-RU');
+                    const delivery = data.data.delivery.toLocaleString('ru-RU');
+                    const installationCost = data.data.installation.toLocaleString('ru-RU');
+                    
+                    resultDiv.innerHTML = `
+                        <div class="result-content">
+                            <div class="result-line">
+                                <span>📦 Материалы:</span>
+                                <span>${materials} ₽</span>
+                            </div>
+                            <div class="result-line">
+                                <span>🚚 Доставка:</span>
+                                <span>${delivery} ₽</span>
+                            </div>
+                            ${installation ? `<div class="result-line">
+                                <span>🛠 Монтаж:</span>
+                                <span>${installationCost} ₽</span>
+                            </div>` : ''}
+                            <div class="result-total">
+                                ИТОГО: ${total} ₽
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ ${data.error || 'Ошибка расчёта'}</div>`;
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Не удалось подключиться к серверу<br>
+                        <small>Убедитесь, что XAMPP запущен</small>
+                    </div>
+                `;
+            }
+        }
+        
+        // Вешаем обработчик на кнопку
+        document.getElementById('calculateBtn').addEventListener('click', calculate);
+        
+        // Добавляем возможность нажать Enter в поле ввода
+        document.getElementById('length').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculate();
+        });
+    </script>
+</body>
+</html>
